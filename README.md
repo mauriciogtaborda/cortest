@@ -1,4 +1,7 @@
-# Frontend Challenge of Mauricio Taborda for COR
+# Frontend Challenge deMauricio Taborda para COR
+
+-- Branch master: Solución utilizando state
+-- Branch redux: Solución utilizando Redux
 
 ## Available Scripts
 
