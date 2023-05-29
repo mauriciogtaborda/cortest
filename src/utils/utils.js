@@ -7,3 +7,7 @@ export const replaceObjectInArray = (arr, obj) => {
     }
     return arr;
   };
+
+  
+export const prioridades = ['Alta', 'Media','Baja'];
+export const estados = ['Nueva', 'En proceso','Finalizada'];

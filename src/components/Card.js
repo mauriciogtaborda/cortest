@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import {prioridades, estados } from '../utils/utils'
 
-function Card({handleDelete, task, prioridades, estados, handleEditValue}) {
+function Card({handleDelete, task, handleEditValue}) {
   const [edit, setEdit] = useState(false)
   const [prioridad, setPrioridad] = useState(task.prioridad)
   const [estado, setEstado] = useState(task.estado)

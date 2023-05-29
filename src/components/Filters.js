@@ -1,6 +1,7 @@
 import React from "react";
+import {prioridades, estados } from '../utils/utils'
 
-const Filters = ({ prioridades, estados, filters, handleChangeValue }) => {
+const Filters = ({ filters, handleChangeValue }) => {
 
   return (
     <div>

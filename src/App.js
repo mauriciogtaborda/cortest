@@ -1,50 +1,30 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 import Card from './components/Card'
 import Form from './components/Form'
 import Filters from './components/Filters'
-import {replaceObjectInArray, findIndexById} from './utils/utils'
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteTaskAction, updateTaskAction } from './actions/taskActions';
+import {setVisibilityFilter} from './actions/filterActions';
+
 import './App.css'
 
-const initialValues = {titulo:"", descripcion:"", prioridad:"", estado:""}
-const prioridades = ['Alta', 'Media','Baja'];
-const estados = ['Nueva', 'En proceso','Finalizada'];
-
 function App() {
-  const [tasks, setTasks] = useState([]);
-  const [values, setValues] = useState(initialValues);
-  const [filters, setFilters] = useState(initialValues);
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setTasks((prevTasks) => [...prevTasks, {...values, id: Math.floor(Math.random() * 100)}]);
-    setValues(initialValues);
-  };
+  const dispatch = useDispatch();
+  const tasks = useSelector(state => state.task.tasks);
+  const filters = useSelector(state => state.filters);
+  const [, forceRender] = useReducer(s => s + 1, 0)
 
   const handleDelete = (id) => {
-    setTasks((prevTasks) => {
-      const newTasks = [...prevTasks];
-      let index = findIndexById(newTasks, id)
-      newTasks.splice(index, 1);
-      return newTasks;
-    });
+    dispatch(deleteTaskAction(id));
   };
-
-  const handleChangeValue = (name, value) => {
-    setValues((prevValue) => ({
-     ...prevValue, [name]: value 
-    }));
-  };
-
+  
   const handleEditTask = (task) => {
-    let taskscopy = [...tasks];
-    taskscopy = replaceObjectInArray(taskscopy, task)
-    setTasks(taskscopy)
+    dispatch(updateTaskAction(task))
+    forceRender()
   };
-
+  
   const handleChangeFilters = (name, value) => {
-    setFilters((prevValue) => ({
-     ...prevValue, [name]: value 
-    }));
+    dispatch(setVisibilityFilter({[name]: value}))
   };
   
   const filterTasks = (tasksNotFiltered) => {
@@ -54,17 +34,9 @@ function App() {
   return (
     <div className="App">
       <div className="App-header">
-        <Form
-          handleSubmit={handleSubmit}
-          handleChangeValue={handleChangeValue}
-          values={values}
-          prioridades={prioridades}
-          estados={estados}
-        />
+        <Form />
       </div>
       <Filters
-        prioridades={prioridades}
-        estados={estados}
         filters={filters}
         handleChangeValue={handleChangeFilters}
       />
@@ -72,8 +44,6 @@ function App() {
         {filterTasks(tasks).map((task, index) => (
           <Card key={index}
             task={task}
-            prioridades={prioridades}
-            estados={estados}
             handleDelete={handleDelete}
             handleEditValue={handleEditTask}
           />

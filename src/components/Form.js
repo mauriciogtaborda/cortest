@@ -1,6 +1,27 @@
-import React from "react";
+import React, {useState} from "react";
+import { useDispatch } from 'react-redux';
+import { addTaskAction, loading } from '../actions/taskActions';
+import {prioridades, estados } from '../utils/utils'
+const initialValues = {titulo:"", descripcion:"", prioridad:"", estado:""}
 
-const Form = ({ handleSubmit, handleChangeValue, values, prioridades, estados }) => {
+const Form = () => {
+    const dispatch = useDispatch();
+    const [values, setValues] = useState(initialValues);
+  
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      dispatch(loading());
+      dispatch(addTaskAction({...values, id: Math.floor(Math.random() * 100)}));
+      setValues(initialValues);
+    };
+
+    const handleChangeValue = (name, value) => {
+        setValues((prevValue) => ({
+         ...prevValue, [name]: value 
+        }));
+      };
+    
   return (
     <form 
         className="todo-form"
